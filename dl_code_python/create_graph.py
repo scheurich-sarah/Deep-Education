@@ -35,6 +35,7 @@ def create_csr_graph_simple(ifile, num_vcount, ingestion_flag):
     nebrs_csc = memoryview_to_np(nebrs_csc1, csr_dt);
     
     kernel_graph_flag = 0; #eADJ graph
+    # TODO ensure num_vcount implemented
     csr_graph = kernel.init_graph(offset_csr, nebrs_csr, offset_csc, nebrs_csc, kernel_graph_flag, num_vcount);
 
     return csr_graph;
@@ -66,6 +67,7 @@ def create_csr_graph(ifile, num_vcount, ingestion_flag):
     nebrs_csc = memoryview_to_np(nebrs_csc1, csr_dt);
     
     kernel_graph_flag = 0; #eADJ graph
+    # TODO ensure num_vcount implemented
     csr_graph = kernel.init_graph(offset_csr, nebrs_csr, offset_csc, nebrs_csc, kernel_graph_flag, num_vcount);
 
     return csr_graph;

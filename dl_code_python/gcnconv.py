@@ -19,6 +19,8 @@ import sparse
 
 # pylint: disable=W0235
 class GraphConv(nn.Module):
+    ''' main challenge is how to define this class
+    which borrows from nn.Module'''
     def __init__(self,
                  in_feats,
                  out_feats,
@@ -80,6 +82,14 @@ class GraphConv(nn.Module):
         self._allow_zero_in_degree = set_value
 
     def forward(self, graph, feat, weight=None):
+        ''' main logic goes in this method.
+        The matmult and run_gspmm are the two main operators
+        matmult: standard Pytorch version, mults two linear layers
+        run_gspmm: generalized spMM, you can think of it like a GAS operator
+
+        USes other operators to add the bias once done with forward comp
+        after bias, does RELU
+        '''
         num_vcount = graph.get_vcount()
         # if self._norm == 'both':
         #     # get a tensor degree for every node
@@ -87,6 +97,8 @@ class GraphConv(nn.Module):
         #     norm = th.pow(degree, -0.5)
         #     feat_src = feat * norm
         #print(feat)
+
+        # added if/else to allow for testing
         if weight is not None:
             if self.weight is not None:
                 raise Exception('External weight is provided while at the same time the'
@@ -95,13 +107,16 @@ class GraphConv(nn.Module):
         else:
             weight = self.weight
 
+        # TODO understand how to implement gspmm operator
+        # it calls GSpmv.apply (in sparse.py)
         if self._in_feats > self._out_feats:
             # mult W first to reduce the feature size for aggregation.
             if weight is not None:
                 feat1 = th.matmul(feat, weight)
                 #print(feat1)
             dim = feat1.size(1)
-            # feature means the vertex input_feature, rst is the output 1d numpy array
+            # feature means the vertex input_feature
+            # rst is the output 1d numpy array
             rst = sparse.run_gspmm(graph, feat1, self._norm, num_vcount, dim)
             #print(rst)
         else:
@@ -163,9 +178,13 @@ class GCN(nn.Module):
     def __init__(self, graph, in_feats, hidden_size, num_classes):
         super(GCN, self).__init__()
         self.graph = graph
+        # creates conv layers
+        # output of one layer is input for another
         self.conv1 = GraphConv(in_feats, hidden_size)
         self.conv2 = GraphConv(hidden_size, num_classes)
     def forward(self, inputs):
+        ''' never explicitly call this.
+        Gets called by the framework'''
         h = self.conv1(self.graph, inputs)
         h = th.relu(h)
         h = self.conv2(self.graph, h)

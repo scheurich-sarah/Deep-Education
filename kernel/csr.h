@@ -65,6 +65,8 @@ class graph_t {
  public:
     void init(vid_t a_vcount, vid_t a_dstsize, void* a_offset, void* a_nebrs, void* a_offset1, void* a_nebrs1, int64_t flag, int64_t num_vcount) {
 
+	// added to initialize the csr for the graph
+    	csr.init(a_vcount, a_dstsize, a_offset, a_nebrs, flag, num_vcount);
     }
 
     vid_t get_vcount() {

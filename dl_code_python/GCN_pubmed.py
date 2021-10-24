@@ -19,17 +19,25 @@ if __name__ == "__main__":
     G = cg.create_csr_graph_simple(ifile, num_vcount, ingestion_flag)
     
     input_feature_dim = 500
+    # GCN is the type of the model
+    # it's defined in gcnconv.py and inherits from Pytorch NNs Module
+    # Model needs details like the graph (G),
+    # the input feature dim = 500 feature per vertex
+    # all vertex types are the same
+    # net is the name of the model you can work with
     net = gcnconv.GCN(G, input_feature_dim, 16, 3)
     #net = gcnconv.GCN(G, input_feature_dim, 16, 3, 3, 1)
 
+    # extract geatures from the pubmed file
     feature = pubmed_util.read_feature_info("/home/pkumar/data/pubmed/feature/feature.txt")
+    # create test and training labels
     train_id = pubmed_util.read_index_info("/home/pkumar/data/pubmed/index/train_index.txt")
     test_id = pubmed_util.read_index_info("/home/pkumar/data/pubmed/index/test_index.txt")
     test_y_label =  pubmed_util.read_label_info("/home/pkumar/data/pubmed/label/test_y_label.txt")
     train_y_label =  pubmed_util.read_label_info("/home/pkumar/data/pubmed/label/y_label.txt")
     
 
-
+    # convert extracted features to tensors
     feature = torch.tensor(feature)
     train_id = torch.tensor(train_id)
     test_id = torch.tensor(test_id)
@@ -45,19 +53,25 @@ if __name__ == "__main__":
     # # labels_train = torch.tensor(output_train_label_encoded )  # their labels are different
     # labeled_nodes_test = torch.tensor(test_idx)  # only the instructor and the president nodes are labeled
     # # labels_test = torch.tensor(output_test_label_encoded)  # their labels are different
+
     # train the network
+    # using Adam optimization
     optimizer = torch.optim.Adam(itertools.chain(net.parameters()), lr=0.01, weight_decay=5e-4)
     all_logits = []
     start = datetime.datetime.now()
     for epoch in range(200):
+        # provide data to the model
         logits = net(feature)
         #print ('check result')
         #print(logits)
         #print(logits.size())
+        # get logits output probability
         all_logits.append(logits.detach())
+        # take softmax to predict one answer
         logp = F.log_softmax(logits, 1)
         #print("prediction",logp[train_id])
     
+        # commpute the negative log likelihood loss for classification
         #print('loss_size', logp[train_id].size(), train_y_label.size())
         loss = F.nll_loss(logp[train_id], train_y_label)
 

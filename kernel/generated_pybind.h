@@ -5,6 +5,10 @@
 
 //namespace py = pybind11;
 
+
+// expects python capsule for output
+// convert to simple 1D or 2D array
+// once inside, calls invoke_gspmm
 inline void export_kernel(py::module &m) { 
     m.def("gspmm",
         [](graph_t& graph, py::capsule& input, py::capsule& output, bool reverse, bool norm) {

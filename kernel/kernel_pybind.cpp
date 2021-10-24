@@ -11,6 +11,7 @@ using std::endl;
 
 namespace py = pybind11;
 
+// structs for all these are in op.h
 array1d_t<float> capsule_to_array1d(py::capsule& capsule) 
 {
     //DLManagedTensor * dlMTensor = (DLManagedTensor *)PyCapsule_GetPointer(&input, "dltesnor");
@@ -60,6 +61,7 @@ array3d_t<float> capsule_to_array3d(py::capsule& capsule)
 #include "generated_pybind.h"
 
 PYBIND11_MODULE(kernel, m) {
+  // TODO make sure get_vcount and e_count work, not implemented
 
   py::class_<graph_t>(m, "graph_t")
     .def(py::init<>())
