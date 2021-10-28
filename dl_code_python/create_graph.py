@@ -30,13 +30,19 @@ def create_csr_graph_simple(ifile, num_vcount, ingestion_flag):
     
     offset_csr1, offset_csc1, nebrs_csr1, nebrs_csc1 = pg.create_csr_view(pgraph);
     offset_csr = memoryview_to_np(offset_csr1, offset_dt);
+    #print('create graph: offset_csr = ', offset_csr)
     offset_csc = memoryview_to_np(offset_csc1, offset_dt);
+    #print('create graph: offset_csc = ', offset_csc)
     nebrs_csr = memoryview_to_np(nebrs_csr1, csr_dt);
+    #print('create graph: nebrs_csr = ', nebrs_csr)
     nebrs_csc = memoryview_to_np(nebrs_csc1, csr_dt);
+    #print('create graph: nebrs_csc = ', nebrs_csc)
     
     kernel_graph_flag = 0; #eADJ graph
     # TODO ensure num_vcount implemented
     csr_graph = kernel.init_graph(offset_csr, nebrs_csr, offset_csc, nebrs_csc, kernel_graph_flag, num_vcount);
+    #print('in create_graph, csr_graph.get_vcount = ', csr_graph.get_vcount())
+    #print('in create_graph, csr_graph.get_edge_count = ', csr_graph.get_edge_count())
 
     return csr_graph;
 

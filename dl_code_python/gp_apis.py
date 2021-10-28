@@ -19,7 +19,7 @@ def gp_gspmm(g, X, dim0, dim1, inverse, norm):
     # copying the data will break the computational graph
     
     # x and x_dl point to the same mem location
-    # x_dl: not exactly a C++ data struc, data type is python capsule
+    # x_dl is not exactly a C++ data struc, data type is python capsule
     gpk.gspmm(g, X_dl, res_dl, inverse, norm)  # do not specify the reduce operation
 
     return res

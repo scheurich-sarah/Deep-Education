@@ -90,7 +90,9 @@ class GraphConv(nn.Module):
         USes other operators to add the bias once done with forward comp
         after bias, does RELU
         '''
+        #print('in gcnconv.py graph =', graph)
         num_vcount = graph.get_vcount()
+        #print('in gcnconv.py graph.get_vcount ', num_vcount)
         # if self._norm == 'both':
         #     # get a tensor degree for every node
         #     degree = get_degree_tensor(graph)

@@ -60,6 +60,7 @@ if __name__ == "__main__":
     all_logits = []
     start = datetime.datetime.now()
     for epoch in range(200):
+    #for epoch in range(2):
         # provide data to the model
         logits = net(feature)
         #print ('check result')

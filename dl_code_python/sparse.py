@@ -3,6 +3,8 @@ import gp_apis
 
 
 # GSpmm is derived from Pytorch autograd
+# func signature is def gp_gspmm(g, X, dim0, dim1, inverse, norm)
+
 class GSpmm(th.autograd.Function):
     
     # must provide
