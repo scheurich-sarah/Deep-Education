@@ -81,9 +81,16 @@ struct array2d_t {
     }
     void row_copy(T* ptr, int64_t index) {
         T* row_ptr = data_ptr + col_count*index;
+	// memcpy args (destinations, source, size)
         memcpy(row_ptr, ptr, col_count*sizeof(T)); 
     }
     void row_copy_norm(T* ptr, int64_t index, int degree) {
+	// this function is for an array of arrays
+	// gets row pointer by starting with 
+	// data_ptr, pointer of first element (another array) in array2d
+	// then col_count*index tells you where pointer for row of interest 
+	// starts based on pointer for first element
+	// sets each column in the row = to a normalized value in another tensor
         T* row_ptr = data_ptr + col_count*index;
         for (int64_t i = 0; i < col_count; ++i) {
             row_ptr[i] = ptr[i]/degree;
