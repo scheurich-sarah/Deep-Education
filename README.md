@@ -1,4 +1,6 @@
 # Deep-Education
+Testing instructions:
+Please just change the call in kernel.cpp invoke_gspmm to use either _gspmm or gspmm_mt. I tried to get something better running, but had no luck.
 
 This repository is now available for public use for teaching end to end workflow of deep learning.  This implies that learners/researchers will learn (by doing) beyond what is generally available as tutorial on general-purpose deep learning framework. 
 The aim is to learn how to write a new operator as part of deep learning layer, and how to use it inside a deep learning module using Python environment (Pytorch or Tensorflow). The second stage is to know more about the role of tensor in the computation graph (forward and backward computation) and implement the kernel of the new operator in an independent C++ module.

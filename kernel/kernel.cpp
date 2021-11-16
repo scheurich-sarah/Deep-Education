@@ -249,12 +249,14 @@ void invoke_gspmm(graph_t& graph, array2d_t<float> & input_array, array2d_t<floa
 	 // backward computation uses csr
 	 // normalzing involves dividing each input param/tensor
 	 // by it's degree, which you need to calc
-         return _gspmm_mt(&graph.csr, input_array, output_array, eSUM, reverse, norm);
+         return _gspmm(&graph.csr, input_array, output_array, eSUM, reverse, norm);
+         //return _gspmm_mt(&graph.csr, input_array, output_array, eSUM, reverse, norm);
     } else {
 	 //cout<<"doing forward computation"<< endl;
 	 // forward computation uses csc, the transpose of csr
 	 // do GAS then normalize
-         return _gspmm_mt(&graph.csc, input_array, output_array, eSUM, reverse, norm);
+         return _gspmm(&graph.csc, input_array, output_array, eSUM, reverse, norm);
+         //return _gspmm_mt(&graph.csc, input_array, output_array, eSUM, reverse, norm);
     }
 
 }
