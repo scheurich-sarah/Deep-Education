@@ -1,4 +1,4 @@
-# Deep-Education
+# Deep-Education, Graph CVN
 Testing instructions:
 Please just change the call in kernel.cpp invoke_gspmm to use either _gspmm or gspmm_mt. I tried to get something better running, but had no luck.
 
